@@ -2,6 +2,8 @@ package grupo05.es.resumen.model;
 
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
@@ -18,8 +20,11 @@ public class Lector {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Email
+    @NotBlank
     @Column(name = "email")
     private String email;
+    @NotBlank
     @Column(name = "nombre")
     private String nombre;
 

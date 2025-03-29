@@ -4,6 +4,7 @@ import grupo05.es.resumen.model.Autor;
 import grupo05.es.resumen.repository.AutorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Array;
@@ -14,7 +15,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AutorService {
+
+    @Autowired
     private AutorRepository autorRepository;
+
+    public AutorService(AutorRepository autorRepository) {
+        this.autorRepository = autorRepository;
+    }
 
     public Autor getAutorByName(String autorName){
         Autor autorEncontrado= autorRepository.findByNombre(autorName);

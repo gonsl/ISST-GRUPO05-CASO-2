@@ -1,0 +1,1 @@
+INSERT INTO autor (email, nombre) VALUES ('correo1@gmail.com', 'autor1')
