@@ -24,8 +24,8 @@ public class Resumen {
     private String descripcion;
     @Column(name = "prime")
     private Boolean prime;
-    @Column(name = "nombreArchivo")
-    private String nombreArchivo;
+    @Column(name = "contenido", columnDefinition = "TEXT")
+    private String contenido;
 
     @ManyToOne
     private Autor autor;

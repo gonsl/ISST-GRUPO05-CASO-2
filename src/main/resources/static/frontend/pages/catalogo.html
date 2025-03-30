@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Catálogo - Resumen.es</title>
+  <link rel="stylesheet" href="../css/catalogo.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">RESUMEN.ES</div>
+      <div class="nav-links">
+        <a href="/src/main/resources/static/frontend/index.html">INICIO</a>
+        <a href="#">PLANES</a>
+        <a href="#">MI CUENTA</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="contenedor">
+    <aside class="filtros">
+      <h3>Filtros</h3>
+      <div class="filtro-grupo">
+        <h4>Categoría</h4>
+        <label><input type="checkbox"> Negocios</label>
+        <label><input type="checkbox"> Autoayuda</label>
+        <label><input type="checkbox"> Economía</label>
+        <label><input type="checkbox"> Liderazgo</label>
+      </div>
+      <div class="filtro-grupo">
+        <h4>Duración</h4>
+        <label><input type="checkbox"> &lt; 5 min.</label>
+        <label><input type="checkbox"> 5 - 10 min.</label>
+        <label><input type="checkbox"> 10 - 15 min.</label>
+        <label><input type="checkbox"> &gt; 15 min.</label>
+      </div>
+      <div class="filtro-grupo">
+        <h4>Valoración</h4>
+        <label><input type="checkbox"> Más leídos</label>
+        <label><input type="checkbox"> Más buscados</label>
+        <label><input type="checkbox"> Mejor del mes</label>
+        <label><input type="checkbox"> Mejor del año</label>
+      </div>
+      <div class="filtro-grupo">
+        <h4>Formato</h4>
+        <label><input type="checkbox" checked> Texto</label>
+        <label><input type="checkbox" disabled> Audio (próximamente)</label>
+      </div>
+    </aside>
+
+    <main class="catalogo">
+      <div class="busqueda">
+        <input type="text" placeholder="Buscar resumen..." id="busquedaInput">
+      </div>
+
+      <div class="contenedor-libros" id="contenedor-libros">
+        <!-- Los resúmenes se cargarán dinámicamente aquí -->
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/catalogo.js"></script>
+</body>
+</html>
+
