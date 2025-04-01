@@ -61,7 +61,7 @@ public class VisitanteService {
     }
 
     public Boolean putVisitante(VisitantePrivado visitante) {
-        Visitante visitanteEncontrado = visitanteRepository.findByNombre(visitante.getNombre());
+        Visitante visitanteEncontrado = visitanteRepository.findByEmail(visitante.getEmail());
         if (visitanteEncontrado == null) {
             log.warn("No existe el visitante a actualiza");
             return false;

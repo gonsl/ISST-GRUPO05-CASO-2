@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LectorRepository extends JpaRepository<Lector, Integer> {
     Lector findByNombre(String lectorName);
+
+    Lector findByEmail(String email);
 }

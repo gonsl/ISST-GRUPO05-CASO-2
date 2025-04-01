@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VisitanteRepository extends JpaRepository<Visitante, Integer> {
     Visitante findByNombre(String nombre);
+
+    Visitante findByEmail(String email);
 }

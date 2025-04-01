@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResumenRepository extends JpaRepository<Resumen, Integer> {
+    Resumen findByTitulo(String nombre);
 }

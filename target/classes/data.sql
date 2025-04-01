@@ -1,4 +1,11 @@
-INSERT INTO autor (email, nombre) VALUES ('correo1@gmail.com', 'autor1');
+INSERT INTO autor (email, nombre) VALUES ('correoAutor1@gmail.com', 'autor1');
+
+
+INSERT INTO lector (email,nombre ) VALUES ('correoLector1@gmail.com', 'lector1');
+
+
+INSERT INTO visitante (email,nombre) VALUES ('correoVisitante@gmail.com', 'visitante1');
+
 
 INSERT INTO resumen (titulo, descripcion, prime, contenido, autor_id)
 VALUES (

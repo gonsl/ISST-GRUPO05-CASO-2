@@ -49,7 +49,7 @@ public class LectorController {
     }
 
     @PutMapping("/put")
-    public ResponseEntity<String> putLector(LectorPrivado lectorPrivado){
+    public ResponseEntity<String> putLector(@RequestBody LectorPrivado lectorPrivado){
 
         boolean isActualizado = lectorService.putLector(lectorPrivado);
         return isActualizado?

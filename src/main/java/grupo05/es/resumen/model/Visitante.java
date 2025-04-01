@@ -19,12 +19,14 @@ public class Visitante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
-    @Column(name = "nombre")
-    private String nombre;
     @Email
     @NotBlank
     @Column(name="email")
     private String email;
+
+    @NotBlank
+    @Column(name = "nombre")
+    private String nombre;
+
 
 }

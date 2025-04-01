@@ -70,7 +70,7 @@ public class LectorService {
     }
 
     public Boolean putLector(LectorPrivado lector){
-        Lector lectorEncontrado = lectorRepository.findByNombre(lector.getNombre());
+        Lector lectorEncontrado = lectorRepository.findByEmail(lector.getEmail());
 
         if(lectorEncontrado==null){
             log.warn("No existe el lector que quieres actualizar");
