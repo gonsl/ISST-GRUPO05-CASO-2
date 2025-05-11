@@ -180,8 +180,9 @@
             <th>Título</th>
             <th>Autor original</th>
             <th>Gratis</th>
+            <th>Audio</th>
             <th>Valoración</th>
-            <th>PDF</th>
+
             <th>Ver resumen</th>
           </tr>
         </thead>
@@ -190,8 +191,9 @@
             <td th:text="${resumen.titulo}">Título</td>
             <td th:text="${resumen.autorOriginal}">Autor</td>
             <td th:text="${resumen.gratuito ? 'Sí' : 'No'}">Gratis</td>
+            <td th:text="${resumen.resumenAudioUrl != null ? 'Sí' : 'No'}">Audio</td>
             <td th:text="${resumen.valoracionMedia == 0.0 ? 'Sin valoraciones' : #numbers.formatDecimal(resumen.valoracionMedia, 1, 1)}">Valoración</td>
-            <td th:text="${resumen.resumenArchivo != null ? 'Sí' : 'No'}">PDF</td>
+           <!--- <td th:text="${resumen.resumenArchivo != null ? 'Sí' : 'No'}">PDF</td>--->
             <td>
               <!-- Gratuito: todos pueden ver -->
               
@@ -207,8 +209,7 @@ class="btn">Leer</a>
 <!-- No gratuito, visitante -->
 <a th:if="${!resumen.gratuito and rol == 'VISITANTE'}"
 href="/planes"
-class="btn disabled"
-style="pointer-events: auto;"
+class="  disabled btn-sm " style="pointer-events: auto;"
 title="Necesitas suscribirte para leer este resumen">🔒 Leer</a>
 
             </td>

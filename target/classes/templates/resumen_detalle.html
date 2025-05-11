@@ -84,6 +84,7 @@
     <h1 th:text="${resumen.titulo}">Título del resumen</h1>
     <div class="meta">
       <p>Autor original: <span th:text="${resumen.autorOriginal}">Autor</span></p>
+      <p>Escritor del resumen: <span th:text="${resumen.escritorEmail}">Escritor del resumen</span></p>
       <p>Gratuito: <span th:text="${resumen.gratuito ? 'Sí' : 'No'}">Sí</span></p>
       <p>Visitas: <span th:text="${resumen.visitas}">0</span></p>
       <p>Valoración media: <span th:text="${resumen.valoracionMedia}">0.0</span>/5</p>
