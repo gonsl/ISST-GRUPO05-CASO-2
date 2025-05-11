@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planes – Resumen.es</title>
+  <style>
+    :root {
+      --color-primary: #914e02;
+      --color-secondary: #f5b767;
+      --color-bg: #f7d28d;
+      --font-sans: 'Helvetica Neue', Arial, sans-serif;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: #1f2937;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 1rem;
+      background: var(--color-primary);
+      color: var(--color-secondary);
+      border: none;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #583200;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>💳 Suscribirse</h2>
+    <form th:action="@{/mejorar-a-lector}" method="post">
+      <label for="titular">Nombre del titular</label>
+      <input type="text" name="titular" id="titular" required/>
+
+      <label for="infoBancaria">Información bancaria</label>
+      <input type="text" name="infoBancaria" id="infoBancaria" required/>
+
+      <button type="submit">Continuar y mejorar cuenta</button>
+    </form>
+  </div>
+  <div>
+    <button onclick="history.back()" class="btn btn-secondary">🔙 Volver</button>
+  </div>
+</body>
+</html>

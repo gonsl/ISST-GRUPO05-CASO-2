@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Subir Resumen – Resumen.es</title>
+  <style>
+    /*–––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /*  PALETA, RESET & TIPOGRAFÍA                  */
+    /*–––––––––––––––––––––––––––––––––––––––––––––––––*/
+    :root {
+      --color-primary:      #914e02;
+      --color-primary-dark: #583200;
+      --color-secondary:    #f5b767;
+      --color-bg:           #f7d28d;
+      --color-text:         #1f2937;
+      --font-sans:          'Helvetica Neue', Arial, sans-serif;
+    }
+    *, *::before, *::after {
+      margin:0; padding:0; box-sizing:border-box;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /*–––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /*  HEADER & NAVEGACIÓN                         */
+    /*–––––––––––––––––––––––––––––––––––––––––––––––––*/
+    .site-header {
+      background: var(--color-secondary);
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .site-header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+    .brand {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+    .nav {
+      display: flex;
+      gap: 1rem;
+    }
+    .nav__link {
+      color: var(--color-text);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /*–––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /*  MAIN / FORMULARIO                          */
+    /*–––––––––––––––––––––––––––––––––––––––––––––––––*/
+    main {
+      flex:1;
+      padding: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 90%;
+      max-width: 540px;
+    }
+
+    .upload-card {
+      background: var(--color-secondary);
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform: translateY(-10px); }
+      to   { opacity:1; }
+    }
+    .upload-card h2 {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--color-primary);
+      margin-bottom: 1.5rem;
+    }
+    .message {
+      background: var(--color-bg);
+      border-left: 4px solid var(--color-primary);
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+    .field label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .field input[type="text"],
+    .field textarea,
+    .field input[type="file"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field textarea {
+      min-height: 6rem;
+      resize: vertical;
+    }
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 4px rgba(145,78,2,0.2);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .checkbox-group label {
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+
+    .actions {
+      text-align: center;
+    }
+    .actions input[type="submit"] {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 1rem;
+      background: var(--color-primary);
+      color: var(--color-secondary);
+      border: none;
+      border-radius: 0.75rem;
+      font-size: 1.125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .actions input[type="submit"]:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-2px);
+    }
+    .actions input[type="submit"]:active {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">Resumen.es</a>
+      <nav class="nav">
+        <a href="/"            class="nav__link">Inicio</a>
+        <a th:href="@{/catalogo}" class="nav__link">Catálogo</a>
+        <a th:href="@{/perfil}"   class="nav__link">Mi perfil</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- FORMULARIO DE SUBIDA -->
+  <main>
+    <div class="container">
+      <div class="upload-card">
+        <h2>📤 Subir resumen</h2>
+
+        <div th:if="${message}" class="message">
+          <p th:text="${message}"></p>
+        </div>
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              action="/pruebas/files/subir/bd/post"
+              th:object="${resumen}">
+
+          <div class="field">
+            <label for="titulo">📖 Título</label>
+            <input type="text"
+                   id="titulo"
+                   th:field="*{titulo}"
+                   placeholder="Introduce el título"
+                   required/>
+          </div>
+
+          <div class="field">
+            <label for="autorOriginal">👤 Autor original</label>
+            <input type="text"
+                   id="autorOriginal"
+                   th:field="*{autorOriginal}"
+                   placeholder="Introduce el autor"/>
+          </div>
+
+          <div class="field">
+            <label for="categoria">📚 Categoría</label>
+            <select id="categoria" th:field="*{categoria}">
+              <option th:value="Negocios">Negocios</option>
+              <option th:value="Autoayuda">Autoayuda</option>
+              <option th:value="Economia">Economía</option>
+              <option th:value="Liderazgo">Liderazgo</option>
+              <option th:value="Otros">Otros</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="resumenTexto">✍️ Texto sobre el libro (Opcional)</label>
+            <textarea id="resumenTexto"
+                      th:field="*{resumenTexto}"
+                      placeholder="Escribe tu texto aquí"></textarea>
+          </div>
+
+          <div class="checkbox-group">
+            <input type="checkbox"
+                   id="gratuitoCheck"
+                   th:field="*{gratuito}"/>
+            <label for="gratuitoCheck">💲 Gratuito</label>
+          </div>
+
+          <div class="field">
+            <label for="pdfFile">📄 Fichero PDF (opcional)</label>
+            <input type="file"
+                   id="pdfFile"
+                   name="file"
+                   accept="application/pdf">
+          </div>
+
+          <div class="field">
+            <label for="audioFile">🎵 Archivo de audio (opcional)</label>
+            <input type="file"
+                   id="audioFile"
+                   name="audioFile"
+                   accept="audio/*"/>
+          </div>
+
+          <div class="actions">
+            <input type="submit" value="🚀 Upload"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

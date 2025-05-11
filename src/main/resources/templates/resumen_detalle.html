@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="'Resumen: ' + ${resumen.titulo}">Resumen detalle</title>
+  <style>
+    :root {
+      --color-primary:      #914e02;
+      --color-secondary:    #f5b767;
+      --color-bg:           #f7d28d;
+      --color-text:         #1f2937;
+      --font-sans:          'Helvetica Neue', Arial, sans-serif;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      padding:2rem;
+    }
+    .container {
+      max-width:800px; margin:0 auto;
+      background:white; padding:2rem;
+      border-radius:.75rem;
+      box-shadow:0 4px 16px rgba(0,0,0,0.1);
+    }
+    h1 { margin-bottom:1rem; }
+    .meta p { margin:.25rem 0; color:#555; }
+    .meta span { font-weight:600; }
+    .content { white-space: pre-wrap; margin-bottom:2rem; }
+    .actions { display:flex; gap:1rem; margin-bottom:2rem; }
+    .btn {
+      display:inline-block; padding:.5rem 1rem;
+      border:none; border-radius:.375rem;
+      font-weight:600; text-decoration:none;
+      font-size:.875rem; cursor:pointer;
+      transition: background .2s;
+    }
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-secondary);
+    }
+    .btn-primary:hover { background:#583200; }
+    .valoraciones { margin-top:2rem; }
+    .valoracion {
+      background:#faf4e6; padding:1rem;
+      border-radius:.5rem; margin-bottom:1rem;
+    }
+    .form-valoracion {
+      margin-top:2rem; padding:1rem;
+      background:#fff; border-radius:.5rem;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    .form-valoracion div { margin-bottom:1rem; }
+    .form-valoracion label { display:block; margin-bottom:.5rem; }
+    .form-valoracion select,
+    .form-valoracion input[type=number] {
+      width:4rem; padding:.25rem;
+      border:1px solid #ccc; border-radius:.375rem;
+    }
+    .form-valoracion textarea {
+      width:100%; height:5rem; padding:.5rem;
+      border:1px solid #ccc; border-radius:.5rem;
+      resize:vertical;
+    }
+    .form-valoracion button {
+      padding:.5rem 1rem; background:var(--color-primary);
+      color:var(--color-secondary); border:none;
+      border-radius:.375rem; cursor:pointer;
+      transition:background .2s;
+    }
+    .form-valoracion button:hover { background:#583200; }
+    .btn-back {
+      display:inline-block; margin-top:2rem;
+      color:var(--color-primary); text-decoration:none;
+      font-weight:600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Título y metadatos -->
+    <h1 th:text="${resumen.titulo}">Título del resumen</h1>
+    <div class="meta">
+      <p>Autor original: <span th:text="${resumen.autorOriginal}">Autor</span></p>
+      <p>Gratuito: <span th:text="${resumen.gratuito ? 'Sí' : 'No'}">Sí</span></p>
+      <p>Visitas: <span th:text="${resumen.visitas}">0</span></p>
+      <p>Valoración media: <span th:text="${resumen.valoracionMedia}">0.0</span>/5</p>
+    </div>
+
+    <!-- Texto extraído del PDF -->
+    <section>
+      <h2>Texto del Resumen</h2>
+      <p class="content" th:text="${resumen.resumenTexto}">
+        Aquí va el texto extraído del PDF…
+      </p>
+    </section>
+
+    <!-- Botones de PDF y audio -->
+    <div class="actions">
+      <a th:if="${resumen.resumenArchivo != null}"
+         th:href="@{'/pruebas/files/archivo/' + ${resumen.titulo}}"
+         class="btn btn-primary">
+         📄 Descargar PDF
+      </a>
+      <div th:if="${resumen.resumenAudioUrl != null}">
+
+        <p><strong>🎵 Escuchar Audio</strong></p>
+        <audio controls th:src="@{'/pruebas/escuchar/' + ${resumen.resumenAudioUrl}}">
+        </audio>
+      </div>
+      <!------      <a th:if="${resumen.resumenAudioUrl}"
+              th:href="@{/pruebas/escuchar/{filename}(filename=${resumen.resumenAudioUrl})}"
+               class="btn btn-primary">
+               🎵 Escuchar Audio
+            </a>----->
+    </div>
+
+    <div th:if="${usuario.rol == 'LECTOR' and !esFavorito}" style="margin-top: 1rem;">
+      <form th:action="@{'/resumen/favorito/' + ${resumen.id}}" method="post">
+        <button type="submit" class="btn">❤️ Añadir a favoritos</button>
+      </form>
+    </div>
+    
+
+    <!-- Valoraciones existentes -->
+    <section class="valoraciones">
+      <h2>⭐ Valoraciones</h2>
+      <div th:if="${#lists.isEmpty(valoraciones)}">
+        <p>No hay valoraciones aún. Sé el primero en valorar.</p>
+      </div>
+      <div th:each="val : ${valoraciones}" class="valoracion">
+        <p>
+          <strong th:text="${val.usuarioEmail}">usuario@ejemplo.com</strong>
+          – <span th:text="${val.puntuacion}">0</span>/5
+        </p>
+        <p th:text="${val.comentario}">Comentario …</p>
+      </div>
+    </section>
+
+    <!-- Formulario para nueva valoración (solo lectores y escritores) -->
+    <section th:if="${usuario != null and (usuario.rol == 'LECTOR' or usuario.rol == 'ESCRITOR')}" class="form-valoracion">
+      <h3>Cuéntanos tu opinión</h3>
+      <form th:action="@{/valoraciones/nueva}" th:object="${valoracion}" method="post">
+        <!-- CSRF token (solo si está disponible) -->
+        <input type="hidden"
+               th:if="${_csrf != null}"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}" />
+
+        <!-- ID del resumen -->
+        <input type="hidden" th:field="*{resumen.id}"/>
+
+        <!-- Puntuación -->
+        <div>
+          <label for="puntuacion">Puntuación:</label>
+          <select id="puntuacion" th:field="*{puntuacion}" required>
+            <option th:value="1">1</option>
+            <option th:value="2">2</option>
+            <option th:value="3">3</option>
+            <option th:value="4">4</option>
+            <option th:value="5">5</option>
+          </select>
+        </div>
+
+        <!-- Comentario -->
+        <div>
+          <label for="comentario">Añade un comentario:</label>
+          <textarea id="comentario" th:field="*{comentario}" required></textarea>
+        </div>
+
+        <button type="submit">Valorar</button>
+      </form>
+    </section>
+
+    <!-- Volver al catálogo -->
+    <div style="text-align: center; margin-top: 2rem;">
+      <a th:href="@{/catalogo}" class="btn btn-primary">← Volver al catálogo</a>
+    </div>
+  </div>
+</body>
+</html>

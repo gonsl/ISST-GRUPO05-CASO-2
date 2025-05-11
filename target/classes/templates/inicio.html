@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resumen.es – Inicio</title>
+
+  <!-- Aquí pegas todo tu CSS dentro de un bloque <style> -->
+  <style>
+  /* Variables de color y tipografía */
+  :root {
+    --color-primary: #914e02;
+    --color-primary-dark: #583200;
+    --color-secondary: #f5b767;
+    --color-bg: #f7d28d;
+    --color-text: #1f2937;
+    --font-sans: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Reset básico */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+    line-height: 1.5;
+  }
+  .container {
+    width: 90%; max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--color-secondary);
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+  }
+  .brand {
+    font-size: 1.75rem; font-weight: bold;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .nav {
+    display: flex; gap:2rem;
+  }
+  .nav__list, .nav__auth {
+    list-style:none; display:flex; gap:1.5rem;
+  }
+  .nav__link {
+    text-decoration:none; color:var(--color-text);
+    font-weight:500;
+  }
+  .nav__link--active { color: var(--color-primary); }
+
+  .btn {
+    display:inline-block; padding:0.5rem 1rem;
+    border-radius:.375rem; font-weight:600;
+    text-decoration:none; transition:.2s;
+  }
+  .btn--primary {
+    background:var(--color-primary);
+    color:var(--color-secondary);
+  }
+  .btn--primary:hover {
+    background:var(--color-primary-dark);
+  }
+  .btn--outline {
+    background:transparent; color:var(--color-primary);
+    border:2px solid var(--color-primary);
+  }
+  .btn--outline:hover {
+    background:var(--color-primary);
+    color:var(--color-secondary);
+  }
+  .btn--secondary {
+    background:var(--color-primary);
+    color:var(--color-secondary);
+  }
+  .btn--secondary:hover {
+    background:var(--color-primary-dark);
+  }
+
+  /* HERO */
+  .hero { padding:4rem 0; }
+  .hero__inner {
+    display:grid; grid-template-columns:1fr; gap:2rem;
+    align-items:center;
+  }
+  @media(min-width:768px) {
+    .hero__inner { grid-template-columns:1fr 1fr; }
+  }
+  .hero__title {
+    font-size:2.5rem; margin-bottom:1rem;
+  }
+  .hero__subtitle {
+    font-size:1.125rem; color:#4b5563;
+    margin-bottom:2rem;
+  }
+  .hero__actions .btn { margin-right:1rem; }
+  .hero__image img { width:100%; height:auto; }
+
+  /* BENEFICIOS */
+  .benefits { padding:3rem 0; }
+  .section-title {
+    text-align:center; font-size:2rem;
+    margin-bottom:2rem;
+  }
+  .benefits__grid {
+    display:grid; grid-template-columns:1fr; gap:1.5rem;
+  }
+  @media(min-width:768px) {
+    .benefits__grid { grid-template-columns:repeat(3,1fr); }
+  }
+  .benefit-card {
+    background:var(--color-secondary);
+    border-radius:.5rem; padding:2rem;
+    text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  }
+  .benefit-card__icon {
+    font-size:2rem; margin-bottom:1rem;
+  }
+  .benefit-card__title {
+    font-size:1.25rem; margin-bottom:.5rem;
+  }
+  .benefit-card__desc {
+    color:#6b7280;
+  }
+
+  /* FOOTER */
+  .site-footer {
+    background:var(--color-secondary);
+    border-top:1px solid #e5e7eb;
+  }
+  .footer__inner {
+    text-align:center; padding:1rem 0;
+    color:#6b7280; font-size:.875rem;
+  }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">Resumen.es</a>
+      <nav class="nav">
+        <ul class="nav__list">
+          <li><a href="/" class="nav__link nav__link--active">Inicio</a></li>
+          <li><a th:href="@{/planes}" class="nav__link">Planes</a></li>
+          <li><a th:href="@{/catalogo}" class="nav__link">Catálogo</a></li>
+        </ul>
+        <ul class="nav__auth">
+          <li><a th:href="@{/login}" class="nav__link">Iniciar sesión</a></li>
+          <li><a th:href="@{/registro}" class="btn btn--secondary">Regístrate</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <h1 class="hero__title">
+          Lee o escucha los mejores resúmenes<br>
+          sin perder tiempo.
+        </h1>
+        <p class="hero__subtitle">
+          Resúmenes de libros de desarrollo personal y cultura empresarial en texto o audio. ¡Todo en 20 minutos!
+        </p>
+        <div class="hero__actions">
+          <a th:href="@{/catalogo}" class="btn btn--primary">Explorar Resúmenes</a>
+          <a th:href="@{/registro}" class="btn btn--outline">Regístrate Gratis</a>
+        </div>
+      </div>
+      <div class="hero__image">
+        <!-- podrías usar aquí un SVG o imagen local -->
+        <img
+        src="/images/hero-illustration.svg"
+        th:src="@{/images/hero-illustration.svg}"
+        alt="Ilustración resúmenes"
+        class="hero__image"
+      />
+      
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section class="benefits">
+    <div class="container">
+      <h2 class="section-title">¿Por qué usar Resumen.es?</h2>
+      <div class="benefits__grid">
+        <div class="benefit-card">
+          <div class="benefit-card__icon">🎧</div>
+          <h3 class="benefit-card__title">Escucha y lee en cualquier momento</h3>
+          <p class="benefit-card__desc">Disponible en texto y audio.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card__icon">⏱️</div>
+          <h3 class="benefit-card__title">20 minutos o menos</h3>
+          <p class="benefit-card__desc">Llega al corazón de cada libro.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card__icon">💼</div>
+          <h3 class="benefit-card__title">Planes Freemium y Premium</h3>
+          <p class="benefit-card__desc">Elige el que mejor se ajuste a ti.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <p>© 2025 Resumen.es</p>
+    </div>
+  </footer>
+
+</body>
+</html>

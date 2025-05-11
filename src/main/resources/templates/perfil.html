@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mi perfil – Resumen.es</title>
+  <style>
+    :root {
+      --color-primary:       #914e02;
+      --color-primary-dark:  #583200;
+      --color-secondary:     #f5b767;
+      --color-bg:            #f7d28d;
+      --color-text:          #1f2937;
+      --font-sans:           'Helvetica Neue', Arial, sans-serif;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height:100vh;
+      display:flex; flex-direction:column;
+    }
+    /* HEADER */
+    .site-header {
+      background: var(--color-secondary);
+      border-bottom:1px solid #e5e7eb;
+    }
+    .site-header .container {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:1rem;
+    }
+    .brand {
+      font-size:1.75rem; font-weight:bold;
+      color: var(--color-primary); text-decoration:none;
+    }
+    .nav { display:flex; gap:1rem; align-items:center; }
+    .nav__link { color: var(--color-text); text-decoration:none; font-weight:500; }
+    .nav__link--active { color: var(--color-primary); }
+    .logout-form {
+      margin-left: 1rem;
+    }
+    .logout-form button {
+      padding:0.5rem 1rem;
+      background: var(--color-primary);
+      color: var(--color-secondary);
+      border:none;
+      border-radius:0.375rem;
+      cursor:pointer;
+      font-weight:600;
+      transition: background 0.2s;
+    }
+    .logout-form button:hover {
+      background: var(--color-primary-dark);
+    }
+
+    /* MAIN */
+    main {
+      flex:1; padding:2rem 0;
+    }
+    .container {
+      width:90%; max-width:900px; margin:0 auto;
+    }
+    h2 { font-size:2rem; margin-bottom:1rem; text-align:center; }
+
+    /* PROFILE INFO */
+    .profile-card {
+      background: var(--color-secondary);
+      border-radius:0.75rem;
+      box-shadow:0 4px 16px rgba(0,0,0,0.1);
+      padding:1.5rem;
+      margin-bottom:2rem;
+    }
+    .profile-card p {
+      font-size:1rem; margin-bottom:0.5rem;
+    }
+    .profile-card span {
+      font-weight:600;
+    }
+
+    /* MIS RESÚMENES BUTTON */
+    .actions {
+      margin-bottom:2rem;
+    }
+    .actions a {
+      display:inline-block;
+      padding:0.75rem 1.5rem;
+      background: var(--color-primary);
+      color: var(--color-secondary);
+      border-radius:0.5rem;
+      text-decoration:none;
+      font-weight:600;
+      transition: background 0.2s;
+    }
+    .actions a:hover {
+      background: var(--color-primary-dark);
+    }
+    .btn-subscripcion {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    background-color: #914e02;
+    color: #f5b767;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .btn-subscripcion:hover {
+    background-color: #583200;
+  }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">Resumen.es</a>
+      <nav class="nav">
+
+        <a th:href="@{/catalogo}" class="nav__link">Catálogo</a>
+        <a th:href="@{/perfil}"   class="nav__link nav__link--active">Mi perfil</a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+          <button type="submit">Cerrar sesión</button>
+        </form>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENIDO -->
+  <main>
+    <div class="container">
+      <h2>Mi perfil</h2>
+
+      <!-- Datos de usuario -->
+      <div class="profile-card">
+        <p>✉️ Correo: <span th:text="${usuario.email}"></span></p>
+        <p>👤 Nombre: <span th:text="${usuario.nombre}"></span></p>
+        <p>⚙️ Rol:    <span th:text="${usuario.rol}"></span></p>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <!-- Si el rol es VISITANTE: redirige a /planes -->
+        <a th:if="${usuario.rol == 'VISITANTE'}"
+           href="/planes"
+           class="btn-subscripcion">
+          💳 Suscribirse como LECTOR
+        </a>
+      
+        <!-- Si el rol es LECTOR o ESCRITOR: mostrar botón que hace POST -->
+        <form th:if="${usuario.rol == 'LECTOR' or usuario.rol == 'ESCRITOR'}"
+              th:action="@{/cambiar-rol}" method="post">
+          <input type="hidden" name="rolActual" th:value="${usuario.rol}" />
+          <button type="submit"
+                  th:text="${usuario.rol == 'LECTOR' ? '❌ Darse de baja' : '🛑 Anular suscripción de ESCRITOR'}"
+                  class="btn-subscripcion">
+          </button>
+        </form>
+      </div>
+
+      <div th:if="${usuario.rol == 'LECTOR' or usuario.rol == 'VISITANTE'}" style="margin-top: 2rem;">
+        <a th:href="@{/escogeResumen}"
+           class="btn-subscripcion"
+           style="display: inline-block; background-color: #0284c7; color: white;">
+          🎯 Obtener recomendaciones personalizadas
+        </a>
+      </div>
+
+      <div th:if="${usuario.rol == 'LECTOR'}" style="margin-top: 2rem;">
+        <h3 style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 1rem;">
+          ❤️ Resúmenes favoritos
+        </h3>
+      
+        <div th:if="${#lists.isEmpty(favoritos)}">
+          <p style="font-style: italic; color: #666;">Todavía no has añadido ningún resumen a favoritos.</p>
+        </div>
+      
+        <ul th:if="${favoritos != null and !#lists.isEmpty(favoritos)}"
+            style="list-style: none; padding-left: 0;">
+          <li th:each="resumen : ${favoritos}"
+              style="background: #fff8e6; border: 1px solid #e2c88e; padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
+            <a th:href="@{'/resumen/texto/' + ${resumen.id}}"
+               th:text="${resumen.titulo}"
+               style="font-weight: 600; color: var(--color-primary); text-decoration: none;"></a>
+          </li>
+        </ul>
+      </div>
+      
+      
+      
+
+      <!-- Botón Mis Resúmenes si es escritor -->
+      <div class="actions my-5" th:if="${usuario.rol}=='ESCRITOR'">
+        <a th:href="@{/escritor/mis-resumenes}">📚 Mis resúmenes</a>
+      </div>
+
+
+    </div>
+  </main>
+
+</body>
+</html>

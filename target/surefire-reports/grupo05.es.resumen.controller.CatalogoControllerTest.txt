@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: grupo05.es.resumen.controller.CatalogoControllerTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.686 s -- in grupo05.es.resumen.controller.CatalogoControllerTest

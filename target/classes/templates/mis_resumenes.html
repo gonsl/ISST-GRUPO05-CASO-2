@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mis Resúmenes – Resumen.es</title>
+  <style>
+    :root {
+      --color-primary:      #914e02;
+      --color-primary-dark: #583200;
+      --color-secondary:    #f5b767;
+      --color-bg:           #f7d28d;
+      --color-text:         #1f2937;
+      --font-sans:          'Helvetica Neue', Arial, sans-serif;
+    }
+
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .site-header {
+      background: var(--color-secondary);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .site-header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .brand {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav__link {
+      color: var(--color-text);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--color-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      color: var(--color-secondary);
+      background: var(--color-primary);
+      border: none;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: var(--color-primary-dark);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--color-primary);
+      color: var(--color-secondary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    thead {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fdf4e3;
+    }
+
+    .alert {
+      background: #fff3cd;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      color: #856404;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">Resumen.es</a>
+      <nav class="nav">
+        <a href="/" class="nav__link">Inicio</a>
+        <a th:href="@{/catalogo}" class="nav__link">Catálogo</a>
+        <a th:href="@{/perfil}" class="nav__link">Mi perfil</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENIDO -->
+  <main>
+    <div class="container">
+      <h2>📁 Resúmenes subidos por ti</h2>
+
+      <div style="margin-bottom: 2rem;">
+        <a href="/pruebas/files/subir" class="btn">Subir nuevo resumen</a>
+      </div>
+
+      <div th:if="${#lists.isEmpty(resumenes)}" class="alert">
+        Aún no has subido ningún resumen.
+      </div>
+
+      <div th:if="${!#lists.isEmpty(resumenes)}">
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Autor Original</th>
+              <th>Visitas</th>
+              <th>Valoración</th>
+              <th>Gratuito</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="resumen : ${resumenes}">
+              <td th:text="${resumen.titulo}">Título</td>
+              <td th:text="${resumen.autorOriginal}">Autor</td>
+              <td th:text="${resumen.visitas}">0</td>
+              <td th:text="${resumen.valoracionMedia}">0.0</td>
+              <td th:text="${resumen.gratuito ? 'Sí' : 'No'}">Sí</td>
+              <td>
+                <a th:href="@{/escritor/editar/{id}(id=${resumen.id})}" class="btn-outline btn">Editar</a>
+                <form th:action="@{'/escritor/eliminar/' + ${resumen.id}}" method="post" style="display:inline">
+                  <button class="btn-outline btn" type="submit" onclick="return confirm('¿Seguro que quieres borrar este resumen?')">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
+

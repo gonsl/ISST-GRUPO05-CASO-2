@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión – Resumen.es</title>
+
+  <style>
+    /* Variables de color y tipografía */
+    :root {
+      --color-primary:       #914e02;
+      --color-primary-dark:  #583200;
+      --color-secondary:     #f5b767;
+      --color-bg:            #f7d28d;
+      --color-text:          #1f2937;
+      --font-sans:           'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* Reset y body */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height:1.5;
+    }
+
+    /* Contenedor y espaciados */
+    .container { width:90%; max-width:600px; margin:0 auto; }
+    .mt-5    { margin-top:3rem !important; }
+    .mt-3    { margin-top:1rem !important; }
+    .w-100   { width:100% !important; }
+
+    /* Flex/grid helpers */
+    .row { display:flex; flex-wrap:wrap; margin:0 -0.5rem; }
+    .justify-content-center { justify-content: center !important; }
+    .col-md-6 {
+      padding:0 0.5rem;
+      flex:0 0 100%; max-width:100%;
+    }
+    @media(min-width:768px) {
+      .col-md-6 {
+        flex:0 0 50%; max-width:50%;
+      }
+    }
+
+    /* Tarjeta */
+    .card {
+      background: var(--color-secondary);
+      border: none;
+      border-radius:0.5rem;
+      overflow:hidden;
+    }
+    .shadow {
+      box-shadow:0 2px 12px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Cabecera de tarjeta */
+    .card-header {
+      padding:1rem;
+      text-align:center !important;
+      background: var(--color-primary) !important;
+      color: var(--color-secondary) !important;
+    }
+
+    /* Cuerpo de tarjeta */
+    .card-body {
+      padding:1.5rem;
+    }
+
+    /* Formularios */
+    .mb-3        { margin-bottom:1rem !important; }
+    .form-label  { display:block; margin-bottom:0.5rem; font-weight:500; }
+    .form-control {
+      width:100%;
+      padding:0.75rem;
+      font-size:1rem;
+      border:1px solid #ccc;
+      border-radius:0.375rem;
+      outline:none;
+    }
+    .form-control:focus {
+      border-color: var(--color-primary);
+      box-shadow:0 0 0 3px rgba(145,78,2,0.2);
+    }
+
+    /* Botones */
+    .btn {
+      display:inline-block;
+      font-weight:600;
+      text-align:center;
+      padding:0.5rem 1rem;
+      border:none;
+      border-radius:0.375rem;
+      cursor:pointer;
+      transition:background 0.2s;
+    }
+    .btn-primary {
+      background: var(--color-primary) !important;
+      color: var(--color-secondary) !important;
+    }
+    .btn-primary:hover {
+      background: var(--color-primary-dark) !important;
+    }
+
+    /* Enlace “Regístrate” */
+    .text-center a {
+      color: var(--color-primary);
+      text-decoration:none;
+      font-weight:500;
+    }
+    .text-center a:hover {
+      text-decoration:underline;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-header">
+            <h4>Iniciar sesión</h4>
+          </div>
+          <div class="card-body">
+            <form th:action="@{/login}" method="post">
+              <div class="mb-3">
+                <label for="username" class="form-label">Correo electrónico</label>
+                <input type="text"
+                       class="form-control"
+                       id="username"
+                       name="username"
+                       required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password"
+                       class="form-control"
+                       id="password"
+                       name="password"
+                       required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Entrar</button>
+            </form>
+            <div class="text-center mt-3">
+              <a th:href="@{/registro}">¿No tienes cuenta? Regístrate</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

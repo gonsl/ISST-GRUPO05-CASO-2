@@ -1,0 +1,9 @@
+<div xmlns:th="https://www.thymeleaf.org">
+    <ul>
+        <li th:each="res : ${resumenes}">
+            <strong th:text="${res.titulo}"></strong>
+            <strong th:text="${res.autorOriginal}"></strong>
+            <a th:href="@{'/pruebas/files/archivo/' + ${res.titulo}}" th:text="${res.titulo}" />
+        </li>
+    </ul>
+</div>

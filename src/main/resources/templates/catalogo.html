@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Catálogo de Resúmenes – Resumen.es</title>
+  <style>
+    :root {
+      --color-primary:      #914e02;
+      --color-primary-dark: #583200;
+      --color-secondary:    #f5b767;
+      --color-bg:           #f7d28d;
+      --color-text:         #1f2937;
+      --font-sans:          'Helvetica Neue', Arial, sans-serif;
+    }
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .site-header {
+      background: var(--color-secondary);
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .site-header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+    .brand {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+    .nav {
+      display: flex;
+      gap: 1rem;
+    }
+    .nav__link {
+      color: var(--color-text);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .catalogo-card {
+      width: 100%;
+      max-width: 960px;
+      background: var(--color-secondary);
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      padding: 2rem;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--color-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+    }
+
+    thead {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fdf4e3;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      color: var(--color-secondary);
+      background: var(--color-primary);
+      border: none;
+      border-radius: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn.disabled {
+      background: #ccc;
+      color: #666;
+    }
+
+    .container {
+      width: 90%;
+     max-width: 1200px;
+     margin: 0 auto;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">Resumen.es</a>
+      <nav class="nav">
+        <a th:href="@{/catalogo}" class="nav__link">Catálogo</a>
+        <a th:href="@{/perfil}"   class="nav__link">Mi perfil</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENIDO -->
+  <main>
+    <div class="catalogo-card">
+      <h2>📚 Catálogo de Resúmenes</h2>
+      <div class="filtros" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center; margin-bottom: 2rem;">
+
+        <!-- 🔍 Buscador -->
+        <form th:action="@{/busca}" method="get" style="display: flex; gap: 0.5rem;">
+          <input type="text" name="queryText" placeholder="Buscar resúmenes" required
+                 style="padding: 0.5rem; border-radius: 0.5rem; border: 1px solid #ccc;"/>
+          <button type="submit" class="btn">Buscar</button>
+        </form>
+      
+        <!-- ⭐ Ordenar por puntuación -->
+        <a th:href="@{/filtraValorados}" class="btn" style="height: fit-content;">Ordenar por puntuación</a>
+        <!--Filtra Favoritos-->
+        <div th:if="${tieneFavoritos}">
+         <a th:href="@{filtraFavoritos}" class="btn" style="height: fit-content;">Ver favoritos</a>
+        </div>
+        <!-- 🎯 Filtro por categoría -->
+        <form th:action="@{/filtraCategorias}" method="get" style="display: flex; gap: 0.5rem; align-items: center;">
+          <label for="categoria">Filtrar por categoría:</label>
+          <select name="categoria" id="categoria"
+                  style="padding: 0.5rem; border-radius: 0.5rem; border: 1px solid #ccc;">
+            <option value="" disabled selected>Elige una categoría…</option>
+            <option value="Negocios">Negocios</option>
+            <option value="Autoayuda">Autoayuda</option>
+            <option value="Economia">Economía</option>
+            <option value="Liderazgo">Liderazgo</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <button type="submit" class="btn">Filtrar</button>
+        </form>
+
+        <!-- 🧹 Limpiar filtros -->
+  <a th:href="@{/catalogo}" class="btn" style="background: #ccc; color: #000; height: fit-content;">Limpiar</a>
+
+      
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Autor original</th>
+            <th>Gratis</th>
+            <th>Valoración</th>
+            <th>PDF</th>
+            <th>Ver resumen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="resumen : ${resumenes}">
+            <td th:text="${resumen.titulo}">Título</td>
+            <td th:text="${resumen.autorOriginal}">Autor</td>
+            <td th:text="${resumen.gratuito ? 'Sí' : 'No'}">Gratis</td>
+            <td th:text="${resumen.valoracionMedia == 0.0 ? 'Sin valoraciones' : #numbers.formatDecimal(resumen.valoracionMedia, 1, 1)}">Valoración</td>
+            <td th:text="${resumen.resumenArchivo != null ? 'Sí' : 'No'}">PDF</td>
+            <td>
+              <!-- Gratuito: todos pueden ver -->
+              
+              <a th:if="${resumen.gratuito}"
+th:href="@{'/resumen/texto/' + ${resumen.id}}"
+class="btn">Leer</a>
+
+<!-- No gratuito, pero el usuario tiene rol -->
+<a th:if="${!resumen.gratuito and (rol == 'LECTOR' or rol == 'ESCRITOR')}"
+th:href="@{'/resumen/texto/' + ${resumen.id}}"
+class="btn">Leer</a>
+
+<!-- No gratuito, visitante -->
+<a th:if="${!resumen.gratuito and rol == 'VISITANTE'}"
+href="/planes"
+class="btn disabled"
+style="pointer-events: auto;"
+title="Necesitas suscribirte para leer este resumen">🔒 Leer</a>
+
+            </td>
+                 
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>
+

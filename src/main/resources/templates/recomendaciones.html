@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Escoge tu primer resumen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+          --color-primary:       #914e02;
+          --color-primary-dark:  #583200;
+          --color-secondary:     #f5b767;
+          --color-bg:            #f7d28d;
+          --color-text:          #1f2937;
+          --font-sans:           'Helvetica Neue', Arial, sans-serif;
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: var(--font-sans);
+          background: var(--color-bg);
+          color: var(--color-text);
+          padding: 2rem;
+        }
+
+        h2 {
+          text-align: center;
+          margin-bottom: 2rem;
+        }
+
+        .resumenes-grid {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 2rem;
+        }
+
+        .card {
+          width: 300px;
+          background: white;
+          border-radius: 0.75rem;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .card-body {
+          padding: 1.25rem;
+        }
+
+        .card-footer {
+          padding: 1rem;
+          background: #fff8e6;
+          border-top: 1px solid #e2c88e;
+          text-align: center;
+        }
+
+        .card-title {
+          font-size: 1.25rem;
+          font-weight: bold;
+          color: var(--color-primary);
+          margin-bottom: 0.5rem;
+        }
+
+        .btn-success {
+          background-color: var(--color-primary);
+          color: var(--color-secondary);
+          font-weight: bold;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+
+        .btn-success:hover {
+          background-color: var(--color-primary-dark);
+        }
+
+        @media (max-width: 768px) {
+          .card {
+            width: 100%;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<h2>Escoge un resumen para recibir recomendaciones</h2>
+
+<div class="resumenes-grid" th:if="${resumenes != null}">
+    <div th:each="resumen : ${resumenes}">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${resumen.titulo}">Título</h5>
+                <p class="card-subtitle" th:text="'Categoría: ' + ${resumen.categoria}">Categoría</p>
+                <p class="card-text" th:text="'Autor original: ' + ${resumen.autorOriginal}">Autor</p>
+            </div>
+            <div class="card-footer">
+                <form th:action="@{/recomendaciones}" method="get">
+                    <input type="hidden" name="categoria" th:value="${resumen.categoria}" />
+                    <button type="submit" class="btn-success">Elegir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
